@@ -35,13 +35,20 @@ const item3 = new Item({
   name: "This is the third task.",
 });
 
+const defaultItems = [item1, item2, item3];
+
+const listSchema = {
+  name: String,
+  items: [itemSchema],
+};
+
+const List = mongoose.model("list", listSchema);
+
 app.get("/", function (req, res) {
   let day = date.getDate();
 
   Item.find(function (err, items) {
     if (items.length === 0) {
-      const defaultItems = [item1, item2, item3];
-
       Item.insertMany(defaultItems, function (err) {
         if (err) console.log(err);
         else console.log("Successfully added default items.");
@@ -81,8 +88,29 @@ app.post("/delete", function (req, res) {
   });
 });
 
-app.get("/work", function (req, res) {
-  res.render("list", { listTitle: "Work", newItems: workItems });
+app.get("/:customListName", function (req, res) {
+  const customListName = req.params.customListName;
+
+  List.findOne({ name: customListName }, function (err, foundList) {
+    if (!err) {
+      if (!foundList) {
+        const list = new List({
+          name: customListName,
+          items: defaultItems,
+        });
+
+        list.save();
+        console.log(customListName + " created once.");
+        res.redirect("/" + customListName);
+      } else {
+        res.render("list", {
+          listTitle: foundList.name,
+          newItems: foundList.items,
+        });
+        console.log(customListName + " not created.");
+      }
+    }
+  });
 });
 
 // app.post("/work", function (req, res) {
