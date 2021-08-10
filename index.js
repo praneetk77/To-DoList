@@ -42,7 +42,7 @@ const listSchema = {
   items: [itemSchema],
 };
 
-const List = mongoose.model("list", listSchema);
+const List = mongoose.model("List", listSchema);
 
 app.get("/", function (req, res) {
   let day = date.getDate();
@@ -62,21 +62,22 @@ app.get("/", function (req, res) {
 
 app.post("/", function (req, res) {
   const itemName = req.body.newTask;
+  const listName = req.body.submit;
 
   const newItem = new Item({
     name: itemName,
   });
 
-  newItem.save();
-  res.redirect("/");
-
-  // if (req.body.submit === "Work") {
-  //   workItems.push(req.body.newTask);
-  //   res.redirect("/work");
-  // } else {
-  //   items.push(req.body.newTask);
-  //   res.redirect("/");
-  // }
+  if (listName == date.getDate()) {
+    newItem.save();
+    res.redirect("/");
+  } else {
+    List.findOne({ name: listName }, function (err, foundList) {
+      foundList.items.push(newItem);
+      foundList.save();
+      res.redirect("/" + listName);
+    });
+  }
 });
 
 app.post("/delete", function (req, res) {
@@ -112,11 +113,6 @@ app.get("/:customListName", function (req, res) {
     }
   });
 });
-
-// app.post("/work", function (req, res) {
-//   items.push(req.body.newTask);
-//   res.redirect("/work");
-// });
 
 app.get("/about", function (req, res) {
   res.render("about");
