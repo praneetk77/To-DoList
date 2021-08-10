@@ -1,9 +1,12 @@
 # To-Do List
 
-Web-App where users can create to-do lists for each day. Also contains a different list for Work tasks and an about page.
+Web-App where users can create unlimited to-do lists. Includes responsive lists for every search parameter. All items are stored in MongoDB. Users can add and delete items separately from each list.
 
 ### Technologies used :-
+
 - NodeJS
-- Express
-- EJS
+	- Express
+	- EJS
+- MongoDB
+- Mongoose
 - HTML, CSS & JavaScript
