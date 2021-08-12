@@ -11,3 +11,4 @@ Web-App where users can create unlimited to-do lists. Includes responsive lists 
 	- Express
 	- EJS
 - HTML, CSS & JavaScript
+- Bootstrap
