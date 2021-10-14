@@ -39,7 +39,11 @@ const item3 = new Item({
   name: "<-- Press this button to delete an item.",
 });
 
-const defaultItems = [item1, item2, item3];
+const item4 = new Item({
+  name: "Add a /(any list heading) after the url to start a new list.",
+});
+
+const defaultItems = [item1, item2, item3, item4];
 
 const listSchema = {
   name: String,
